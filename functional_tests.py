@@ -1,5 +1,6 @@
 from selenium import webdriver
 import unittest
+import time
 
 class NewVisitorTest(unittest.TestCase):
 
@@ -11,11 +12,11 @@ class NewVisitorTest(unittest.TestCase):
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         
-        # Maria entra no site
         self.browser.get('http://localhost:8000')
 
-        # Ela nota o título
         self.assertIn('To-Do', self.browser.title)
+
+        time.sleep(5) 
 
 if __name__ == '__main__':
     unittest.main()
