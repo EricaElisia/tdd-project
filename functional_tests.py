@@ -15,31 +15,33 @@ class NewVisitorTest(unittest.TestCase):
     
         self.browser.get('http://localhost:8000')
 
-        # Ainda existe uma caixa de texto convidando para adicionar outro item
-        # Ela digita: "Estudar testes de unidade"
-        inputbox = self.browser.find_element("id", "id_new_item")  
-        inputbox.send_keys('Estudar testes de unidade')
-        inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
-
-        # A página atualiza novamente, e agora mostra ambos os itens na sua lista
-        self.check_for_row_in_list_table('1: Estudar testes funcionais')
-        self.check_for_row_in_list_table('2: Estudar testes de unidade')
-
+        # Verifica título
         self.assertIn('To-Do', self.browser.title)
 
         header_text = self.browser.find_element("tag name", "h1").text  
         self.assertIn('To-Do', header_text)
 
+        # Encontra input
         inputbox = self.browser.find_element("id", "id_new_item")  
         self.assertEqual(inputbox.get_attribute('placeholder'), 'Enter a to-do item')
 
+        # PRIMEIRO ITEM
         inputbox.send_keys('Estudar testes funcionais')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
         self.check_for_row_in_list_table('1: Estudar testes funcionais')
 
+        # SEGUNDO ITEM
+        inputbox = self.browser.find_element("id", "id_new_item")  
+        inputbox.send_keys('Estudar testes de unidade')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        # Agora os dois devem existir
+        self.check_for_row_in_list_table('1: Estudar testes funcionais')
+        self.check_for_row_in_list_table('2: Estudar testes de unidade')
+        
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element("id", "id_list_table")
         rows = table.find_elements("tag name", "tr")
