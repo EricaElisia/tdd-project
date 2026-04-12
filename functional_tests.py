@@ -23,11 +23,8 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
 
         # A página atualiza novamente, e agora mostra ambos os itens na sua lista
-        table = self.browser.find_element("id", "id_list_table")
-        rows = table.find_elements("tag name", "tr")
-
-        self.assertIn('1: Estudar testes funcionais', [row.text for row in rows])
-        self.assertIn('2: Estudar testes de unidade', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Estudar testes funcionais')
+        self.check_for_row_in_list_table('2: Estudar testes de unidade')
 
         self.assertIn('To-Do', self.browser.title)
 
@@ -41,10 +38,12 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
+        self.check_for_row_in_list_table('1: Estudar testes funcionais')
+
+    def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element("id", "id_list_table")
         rows = table.find_elements("tag name", "tr")
-
-        self.assertIn('1: Estudar testes funcionais', [row.text for row in rows])
+        self.assertIn(row_text, [row.text for row in rows])
 
 if __name__ == '__main__':
     unittest.main()
