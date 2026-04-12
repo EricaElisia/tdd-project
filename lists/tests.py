@@ -4,7 +4,6 @@ from django.http import HttpRequest
 from lists.views import home_page
 from lists.models import Item
 from django.test import TestCase
-from lists.models import Item
 
 class HomePageTest(TestCase):
 
@@ -27,8 +26,8 @@ class HomePageTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'A new list item')
 
-        self.assertIn('A new list item', response.content.decode())
-        self.assertTemplateUsed(response, 'home.html')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
         
     def test_only_saves_items_when_necessary(self):
         self.client.get('/')
